@@ -1,3 +1,4 @@
+require "pry"
 def game_hash
   {
     away: { team_name: 'Charlotte Hornets',
@@ -180,23 +181,24 @@ def big_shoe_rebounds
 end
 
 def most_points_scored
-   most_point = 0
-   player = nil
-   game_hash.each do |location, team_data|
-      team_data[:players].each do |player_name, value|
-         if value[:points] > most_point
-            most_point = value[:points]
-            player = player_name
-         end
-     end
-   end
-   player
-end
+    most_point = 0
+    player = nil
+    game_hash.each do |location, team_data|
+        team_data[:players].each do |player_name|  #i didnt even use value since it was nil...
+          if player_name[:points] > most_point
+              most_point = player_name[:points] #all the data was in player_name
+              player = player_name[:player_name]
+          end 
+      end 
+    end
+    player
+  end
 
 def winning_team
   home_team = 0
   away_team = 0
   game_hash[:home][:players].each do |name, value|
+    #binding.pry
     home_team += value[:points]
   end
   game_hash[:away][:players].each do |name, value|
@@ -224,7 +226,7 @@ def player_with_longest_name
   player_name
 end
 
-def long_name_steals_a_ton?
+def long_name_steals_a_ton
   name_with_steal = nil
   steal_number = 0
   game_hash.each do |location, team_data|
