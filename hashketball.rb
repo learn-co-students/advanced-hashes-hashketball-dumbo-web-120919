@@ -106,66 +106,77 @@ def game_hash
   }
 end
 
-def num_points_scored(sought_player_name)
+def num_points_scored(reqplayer_name)
   game_hash.each do |_place, team|
-    team.each do |attribute, data|
-      next unless attribute == :players
+    team.each do |attri, data|
+      next unless attri == :players
 
       data.each do |player|
-        return player[:points] if player[:player_name] == sought_player_name
+        return player[:points] if player[:player_name] == reqplayer_name
       end
     end
   end
 end
 
-def shoe_size(sought_player_name)
+def shoe_size(reqplayer_name)
+  
   game_hash.each do |_place, team|
-    team.each do |attribute, data|
-      next unless attribute == :players
+    
+    team.each do |attri, data|
+      next unless attri == :players
 
-      data.each do |player|
-        return player[:shoe] if player[:player_name] == sought_player_name
-      end
+      data.each { |player|
+        return player[:shoe] if player[:player_name] == reqplayer_name
+      }
     end
   end
 end
 
 def team_colors(team_name)
-  game_hash.each do |place, team|
+  
+  game_hash.each {|place, team|
     return game_hash[place][:colors] if team[:team_name] == team_name
-  end
+  }
+  
 end
 
 def team_names
+  
   game_hash.collect do |_place, team|
     team[:team_name]
+    
   end
 end
 
 def player_numbers(team_name)
   nums = []
+  
   game_hash.each do |_place, team|
+    
     next unless team[:team_name] == team_name
 
     team.each do |attribute, data|
+      
       next unless attribute == :players
 
-      data.each do |data|
+      data.each { |data|
+        
         nums << data[:number]
-      end
+        
+      }
     end
   end
   nums
 end
 
-def player_stats(sought_player_name)
+def player_stats(reqplayer_name)
   new_hash = {}
   game_hash.collect do |place, team|
-    team.each do |attribute, _data|
-      next unless attribute == :players
+    team.each do |attri, _data|
+      next unless attri == :players
 
-      game_hash[place][attribute].each do |player|
-        next unless player[:player_name] == sought_player_name
+      game_hash[place][attri].each do |player|
+        next unless player[:player_name] == reqplayer_name
 
         new_hash = player.delete_if do |k, _v|
           k == :player_name
@@ -181,15 +192,20 @@ def big_shoe_rebounds
   num_rebounds = 0
 
   game_hash.each do |_team, game_data|
+    
     game_data[:players].each do |player|
+      
       if player[:shoe] > biggest_shoe
+        
         biggest_shoe = player[:shoe]
         num_rebounds = player[:rebounds]
+        
       end
     end
   end
 
   num_rebounds
+  
 end
 
 # # Bonus Questions
@@ -199,32 +215,42 @@ end
 # # to DRY (don't repeat yourself) up my code.
 
 def iterate_through_players_for(name, statistic)
+  
   game_hash.each do |_team, game_data|
+    
     game_data[:players].each do |player|
+      
       return player[statistic] if player[:player_name] == name
     end
   end
 end
 
 def player_with_most_of(statistic)
+  
   player_name = nil
   amount_of_stat = 0
 
   game_hash.each do |_team, game_data|
+    
     game_data[:players].each do |player|
+      
       if player[statistic].is_a? String
         if player[statistic].length > amount_of_stat
           amount_of_stat = player[statistic].length
           player_name = player[:player_name]
         end
       elsif player[statistic] > amount_of_stat
+      
         amount_of_stat = player[statistic]
+        
         player_name = player[:player_name]
+        
       end
     end
   end
 
   player_name
+  
 end
 
 def most_points_scored
@@ -239,23 +265,31 @@ def winning_team
   scores = { 'Brooklyn Nets' => 0, 'Charlotte Hornets' => 0 }
 
   game_hash.each do |_team, game_data|
+    
     game_data[:players].each do |player|
       scores[game_data[:team_name]] += iterate_through_players_for(player[:player_name], :points)
+      
     end
   end
 
   scores.max_by { |_k, v| v }.first
+  
 end
 
 def player_with_longest_name
+  
   player_with_most_of(:player_name)
+  
 end
 
 # # Super Bonus Question
 
 def long_name_steals_a_ton?
+  
   player_with_most_of(:steals) == player_with_most_of(:player_name)
+  
 end
+
 
 
 
