@@ -191,5 +191,89 @@ def big_shoe_rebounds
   num_rebounds
 end
 
+def most_points_scored
+  points_scored = 0
+  player_name = ""
+
+  game_hash.each do |_team, game_data|
+    game_data[:players].each do |player|
+      if player[:points] > points_scored
+        points_scored = player[:points]
+        player_name = player[:player_name]
+      end
+    end
+  end
+  return player_name
+end
+
+def winning_team
+  home_team_points = 0 
+  away_team_points = 0 
+  
+  game_hash.each do |team, info|
+    if team == :home 
+      info[:players].each do |player|
+        home_team_points += player[:points]
+      end
+    elsif team == :away 
+      info[:players].each do |player|
+        away_team_points += player[:points]
+      end
+    end
+  end
+  
+  if home_team_points > away_team_points
+    return game_hash[:home][:team_name]
+  elsif away_team_points > home_team_points
+    return game_hash[:away][:team_name]
+  end
+end
+
+def player_with_longest_name
+  longest_name_length = 0
+  player_name = ""
+  
+  game_hash.each do |team, game_data|
+    game_data[:players].each do |player|
+      if player[:player_name].length > longest_name_length
+        longest_name_length = player[:player_name].length
+        player_name = player[:player_name]
+      end
+    end
+  end
+  return player_name
+end
+
+def long_name_steals_a_ton?
+  longest_name_length = 0
+  longest_player_name = ""
+  
+  game_hash.each do |team, game_data|
+    game_data[:players].each do |player|
+      if player[:player_name].length > longest_name_length
+        longest_name_length = player[:player_name].length
+        longest_player_name = player[:player_name]
+      end
+    end
+  end
+  
+  most_steals = 0
+  steals_player_name = ""
+
+  game_hash.each do |_team, game_data|
+    game_data[:players].each do |player|
+      if player[:steals] > most_steals
+        most_steals = player[:steals]
+        steals_player_name = player[:player_name]
+      end
+    end
+  end
+  
+  if longest_player_name == steals_player_name
+    return true 
+  end
+    
+end
+  
 
 
