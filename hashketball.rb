@@ -1,10 +1,9 @@
 # Write your code here!
+# Work hard and sleeep less XD
 def game_hash
   {
     away:{
-      team_name: 'Charlotte Hornets',
-      colors: ['Turquoise', 'Purple'],
-      players: [
+      team_name: 'Charlotte Hornets', colors: ['Turquoise', 'Purple'], players: [
               { player_name: 'Jeff Adrien',
                 number: 4,
                 shoe: 18,
@@ -49,9 +48,7 @@ def game_hash
                 assists: 12,
                 steals: 7,
                 blocks: 5,
-                slam_dunks: 12 }
-            ] 
-    } ,
+                slam_dunks: 12 }] },
     
     home:{
       team_name: 'Brooklyn Nets',
